@@ -1,19 +1,18 @@
-import vertexai
-from vertexai.preview.generative_models import GenerativeModel, ChatSession
+import google.generativeai as genai
 
-project_id = "xenon-petal-445620-c9"
-location = "us-central1"
-vertexai.init(project=project_id, location=location)
+# Configure the API key
+genai.configure(api_key="your-api-key")
 
-model = GenerativeModel("gemini-1.5-pro")
-chat = model.start_chat()
+# Initialize the model
+model = genai.GenerativeModel("gemini-1.5-pro")
 
-def get_summary(chat: ChatSession, text: str):
+# Function to summarize text
+def summarize_text(text: str) -> str:
     prompt = f"Provide a summary for the following text: {text}"
-    response = chat.send_message(prompt)
+    response = model.generate_content(prompt)
     return response.text
 
-# Example input text
+# Example text to summarize
 text = (
     "Cloud computing has revolutionized the way businesses operate, offering scalable resources, reduced infrastructure "
     "costs, and improved operational efficiency. By leveraging cloud platforms like AWS, organizations can deploy applications "
@@ -24,6 +23,6 @@ text = (
 )
 
 # Get the summary
-summary = get_summary(chat, text)
+summary = summarize_text(text)
 print("Summary:")
 print(summary)
